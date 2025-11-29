@@ -1,16 +1,7 @@
 import Script from "next/script";
 
-const idList: Record<string, string> = {
-  kim: "68d2918cf1f6ffb0ac84056b",
-  elon: "68d2918cf1f6ffb0ac84056b",
-  shakira: "68d2918cf1f6ffb0ac84056b",
-};
-
-export default function HeaderScript({ content }: { content: string }) {
-
-  const pixelId = idList[content];
-
-  if (!pixelId) return null;
+export default function HeaderScript() {
+  const pixelId = "67930495268b1d8acab8cab0";
 
   return (
     <>
@@ -34,5 +25,4 @@ export default function HeaderScript({ content }: { content: string }) {
       />
     </>
   );
-  
 };

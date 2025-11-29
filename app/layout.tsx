@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Red_Hat_Display } from "next/font/google";
 import { headers, cookies } from "next/headers";
 import "@/app/globals.css";
+import Script from "next/script";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -43,11 +44,11 @@ export default async function Layout({
     
   return (
     <html lang="es">
-      {isProduction && (
-        <head>
+      <head>
+        {isProduction && (
           <HeaderScript content={content} />
-        </head>
-      )}
+        )}
+      </head>
       <body className={bodyClassName} suppressHydrationWarning>
         {userLayer === 1 ?
           <WhiteContent />
