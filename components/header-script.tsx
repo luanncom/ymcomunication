@@ -2,7 +2,7 @@
 
 import Script from "next/script";
 
-const DEFAULT_PIXEL_ID = "67930495268b1d8acab8cab0"; // <- SEU PIXEL AQUI
+const DEFAULT_PIXEL_ID = "67930495268b1d8acab8cab0";
 
 const idList: Record<string, string> = {
   kim: "67930495268b1d8acab8cab0",
@@ -15,12 +15,26 @@ type HeaderScriptProps = {
 };
 
 export default function HeaderScript({ content }: HeaderScriptProps) {
-  // Se não tiver cookie, usa o pixel padrão
   const pixelId = (content && idList[content]) || DEFAULT_PIXEL_ID;
 
   return (
     <>
-      {/* Config da UTMify → define o pixelId */}
+      {/* Google Tag Manager */}
+      <Script
+        id="gtm-head"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-N534J7MN');
+          `,
+        }}
+      />
+
+      {/* Pixel ID da UTMify */}
       <Script
         id="utmify-config"
         strategy="afterInteractive"
@@ -29,7 +43,7 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
         }}
       />
 
-      {/* Script de UTMs (captura UTMs, fbclid, gclid, etc) */}
+      {/* Script de UTMs */}
       <Script
         id="utmify-utms"
         src="https://cdn.utmify.com.br/scripts/utms/latest.js"
@@ -37,7 +51,7 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
         data-utmify-prevent-subids=""
       />
 
-      {/* Pixel da UTMify (envia eventos do Meta + associa UTMs) */}
+      {/* Pixel da UTMify */}
       <Script
         id="utmify-pixel"
         src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"
