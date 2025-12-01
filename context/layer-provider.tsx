@@ -32,7 +32,7 @@ export function LayerProvider({
   // ---------------------------------------------------------
   // LINKS ORIGINAIS DA STRIPE — não mexa neles!
   // ---------------------------------------------------------
-  let frontLinkBase = "https://buy.stripe.com/test_fZe8yS6WT60xaJO000";
+  let frontLinkBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
   let promoLinkBase = "https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o";
 
   // ---------------------------------------------------------
