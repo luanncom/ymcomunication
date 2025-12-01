@@ -1,76 +1,74 @@
+"use client";
+
 import Button from "@/components/button";
 import Comments from "@/components/comments";
-import PlacesAlert from '@/components/places-alert';
+import PlacesAlert from "@/components/places-alert";
 import VSLBlackMegan from "@/components/videos/vsl-black-megan";
-import { useLayer } from '@/context/layer-provider';
-import { useEffect, useState } from 'react';
-import { CheckCheck, Loader2 } from 'lucide-react';
+import { useLayer } from "@/context/layer-provider";
+import { useEffect, useState } from "react";
+import { CheckCheck, Loader2 } from "lucide-react";
 
 export default function Page({
   active,
   handleClick,
-}:{
-  active: boolean,
-  handleClick: () => void,
+}: {
+  active: boolean;
+  handleClick: () => void;
 }) {
 
-  // COMPONENT STATES
+  // CONTROLA QUANDO O BOTÃO APARECE
   const [visible, setVisible] = useState<boolean>(false);
 
-  // IMPORT CONTEXT DATA
+  // DADOS DO LAYER (só uso o host pra back redirect)
   const userLayerData = useLayer();
-
-  // USER LAYER DATA
   const userHost = userLayerData.host;
 
-  // ⚠️ BASE FIXO DA STRIPE (SEM PARAMETROS)
-  const stripeBaseUrl = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
+  // 🚨 LINK BASE DA STRIPE (SEM NENHUM PARÂMETRO)
+  const stripeBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
 
-  // LINK FINAL QUE VAI PRO BOTÃO
-  const [checkoutLink, setCheckoutLink] = useState<string>(stripeBaseUrl);
+  // LINK FINAL QUE VAI NO BOTÃO (COM client_reference_id)
+  const [checkoutLink, setCheckoutLink] = useState<string>(stripeBase);
 
-  // SET CONTENT DATA
+  // VÍDEO / BACK REDIRECT
   const VSL = VSLBlackMegan;
   const videoId = "68deddf0d033c20b201de72c";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
 
-  // MONTA O LINK FINAL DA STRIPE COM TODOS OS PARAMS + client_reference_id
+  // 👉 AQUI É ONDE EU MONTO O client_reference_id
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // pega os parâmetros da URL da página
-    const search = window.location.search;           // ?xtest=...&xcat=...&utm_...&xcod=...&sck=...
-    const params = new URLSearchParams(search);
+    const params = new URLSearchParams(window.location.search);
 
+    // xcod carrega toda a info da campanha (campaign, adset, ad, placement...)
     const xcod = params.get("xcod");
 
-    // se tiver xcod, usamos também como client_reference_id
     if (xcod && xcod.trim() !== "") {
-      params.set("client_reference_id", xcod);
+      // SOMENTE o que interessa pra Stripe / n8n:
+      // client_reference_id = xcod
+      const finalUrl = `${stripeBase}?client_reference_id=${encodeURIComponent(xcod)}`;
+      setCheckoutLink(finalUrl);
+    } else {
+      // se não tiver xcod, vai sem tracking mesmo
+      setCheckoutLink(stripeBase);
     }
+  }, [stripeBase]);
 
-    const queryString = params.toString();          // xtest=...&xcat=...&...&client_reference_id=...
-
-    const finalUrl = queryString
-      ? `${stripeBaseUrl}?${queryString}`
-      : stripeBaseUrl;
-
-    setCheckoutLink(finalUrl);
-  }, [stripeBaseUrl]);
-
-  // VIDEO VERIFY
+  // LIBERA O BOTÃO QUANDO O VÍDEO CHEGA NO MOMENTO CERTO
   useEffect(() => {
     if (!visible) {
       const intervalId = setInterval(() => {
-        const storedVideoTime = Number(localStorage.getItem(videoId + '-resume'));
+        const storedVideoTime = Number(
+          localStorage.getItem(videoId + "-resume")
+        );
         if (storedVideoTime > pitchTime) {
           setVisible(true);
-        };
+        }
       }, 1000);
       return () => clearInterval(intervalId);
-    };
-  }, [videoId, visible]);
+    }
+  }, [videoId, visible, pitchTime]);
 
   // BACK REDIRECT
   useEffect(() => {
@@ -78,18 +76,18 @@ export default function Page({
       let urlBackRedirect = url;
       urlBackRedirect =
         urlBackRedirect.trim() +
-        (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +
-        document.location.search.replace('?', '').toString();
-      history.pushState({}, '', location.href);
-      history.pushState({}, '', location.href);
-      history.pushState({}, '', location.href);
-      window.addEventListener('popstate', () => {
-        console.log('onpopstate', urlBackRedirect);
+        (urlBackRedirect.indexOf("?") > 0 ? "&" : "?") +
+        document.location.search.replace("?", "").toString();
+      history.pushState({}, "", location.href);
+      history.pushState({}, "", location.href);
+      history.pushState({}, "", location.href);
+      window.addEventListener("popstate", () => {
+        console.log("onpopstate", urlBackRedirect);
         setTimeout(() => {
           location.href = urlBackRedirect;
         }, 1);
       });
-    };
+    }
 
     setBackRedirect(backLink);
   }, [backLink]);
@@ -102,6 +100,7 @@ export default function Page({
         </span>
         <PlacesAlert visible={visible} />
       </div>
+
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
         {visible && (
@@ -113,7 +112,7 @@ export default function Page({
             >
               {active ? (
                 <Loader2 className="size-5 animate-spin" />
-              ):(
+              ) : (
                 <CheckCheck className="size-5" />
               )}
               <span>I WANT TO PAY THE FEE!</span>
@@ -121,12 +120,14 @@ export default function Page({
           </a>
         )}
       </div>
+
       {!visible && (
         <div className="text-sm text-center p-2">
           🔊 Check if your sound is turned on
         </div>
       )}
+
       <Comments />
     </>
   );
-};
+}
