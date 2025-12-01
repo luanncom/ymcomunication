@@ -16,7 +16,7 @@ const LayerContext = createContext<LayerContext | undefined>(undefined);
 type LayerProviderProps = {
   host: string;
   layer: number;
-  params: string;  // querystring vinda da URL, sem "?"
+  params: string;
   content: string;
   children: ReactNode;
 };
@@ -29,47 +29,42 @@ export function LayerProvider({
   children,
 }: LayerProviderProps) {
 
-  // ---------------------------------------------------------
-  // LINKS BASE DA STRIPE (sem querystring)
-  // ---------------------------------------------------------
+  // Links base da Stripe
   const frontLinkBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
   const promoLinkBase = "https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o";
 
-  // ---------------------------------------------------------
-  // LÊ OS PARÂMETROS DA URL QUE VÊM DA META
-  // (utm_source, utm_campaign, xcod, etc.)
-  // ---------------------------------------------------------
+  // Pega todos os parâmetros atuais
   const urlParams = new URLSearchParams(params || "");
 
-  // xcod = “pacote” com os dados da campanha
+  // Pega o xcod (tráfego da META)
   const xcod = urlParams.get("xcod");
 
-  // Se existir xcod, usamos ele também como client_reference_id
-  if (xcod && xcod.trim() !== "") {
+  // Se existir xcod, usa também no client_reference_id
+  if (xcod) {
     urlParams.set("client_reference_id", xcod);
   }
 
-  // Query final que será usada na Stripe
-  const finalQuery = urlParams.toString(); // ex: utm_source=...&utm_campaign=...&xcod=...&client_reference_id=...
+  const finalQuery = urlParams.toString();
 
-  // Monta os links finais da Stripe já com todos os parâmetros
-  const frontLink =
-    finalQuery ? `${frontLinkBase}?${finalQuery}` : frontLinkBase;
+  const frontLink = finalQuery
+    ? `${frontLinkBase}?${finalQuery}`
+    : frontLinkBase;
 
-  const promoLink =
-    finalQuery ? `${promoLinkBase}?${finalQuery}` : promoLinkBase;
-
-  const contextValue = {
-    host,
-    layer,
-    params: finalQuery, // agora já inclui client_reference_id
-    content,
-    frontLink,
-    promoLink,
-  };
+  const promoLink = finalQuery
+    ? `${promoLinkBase}?${finalQuery}`
+    : promoLinkBase;
 
   return (
-    <LayerContext.Provider value={contextValue}>
+    <LayerContext.Provider
+      value={{
+        host,
+        layer,
+        params: finalQuery,
+        content,
+        frontLink,
+        promoLink,
+      }}
+    >
       {children}
     </LayerContext.Provider>
   );
