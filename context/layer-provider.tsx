@@ -30,10 +30,9 @@ export function LayerProvider({
 }: LayerProviderProps) {
 
   // SET LINKS
-  const frontLink = 'https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n?client_reference_id={{campaign.name}}|{{campaign.id}}|{{adset.name}}|{{adset.id}}|{{ad.name}}|{{ad.id}}|{{placement}}
-';
-  const promoLink = 'https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o?client_reference_id={{campaign.name}}|{{campaign.id}}|{{adset.name}}|{{adset.id}}|{{ad.name}}|{{ad.id}}|{{placement}}
-';
+  const frontLink = 'https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n';
+  const promoLink = 'https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o';
+
   const contextValue = {
     host,
     layer,
