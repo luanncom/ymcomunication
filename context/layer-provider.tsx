@@ -30,8 +30,8 @@ export function LayerProvider({
 }: LayerProviderProps) {
 
   // SET LINKS
-  const frontLink = 'https://pay.hotmart.com/Q103021955O?off=vhn2gbpj&checkoutMode=10&fbclid={{fbclid}}&click_id={{fbclid}}';
-  const promoLink = 'https://pay.hotmart.com/Q103021955O?off=tyt15lds&checkoutMode=10&fbclid={{fbclid}}&click_id={{fbclid}}';
+  const frontLink = 'https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n';
+  const promoLink = 'https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o';
 
   const contextValue = {
     host,
