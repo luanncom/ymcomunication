@@ -30,37 +30,32 @@ export function LayerProvider({
 }: LayerProviderProps) {
 
   // ---------------------------------------------------------
-  // LINKS ORIGINAIS DA STRIPE — não mexa neles!
+  // LINKS BASE DA STRIPE (sem querystring)
   // ---------------------------------------------------------
-  let frontLinkBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
-  let promoLinkBase = "https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o";
+  const frontLink = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
+  const promoLink = "https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o";
 
   // ---------------------------------------------------------
-  // PEGA OS PARAMETROS da URL
+  // LÊ OS PARÂMETROS DA URL QUE VÊM DA META
+  // (utm_source, utm_campaign, xcod, etc.)
   // ---------------------------------------------------------
-  const searchParams = new URLSearchParams(params);
+  const urlParams = new URLSearchParams(params || "");
 
-  // Esse é o valor completo da campanha/meta ads (xcod)
-  const xcod = searchParams.get("xcod");
+  // xcod é onde você está concentrando os dados da campanha
+  const xcod = urlParams.get("xcod");
 
-  // ---------------------------------------------------------
-  // MONTA O LINK FINAL JÁ COM client_reference_id
-  // ---------------------------------------------------------
-  let frontLink = frontLinkBase;
-  let promoLink = promoLinkBase;
-
+  // Se existir xcod, injeta como client_reference_id
   if (xcod && xcod.trim() !== "") {
-    frontLink = `${frontLinkBase}?client_reference_id=${encodeURIComponent(xcod)}`;
-    promoLink = `${promoLinkBase}?client_reference_id=${encodeURIComponent(xcod)}`;
+    urlParams.set("client_reference_id", xcod);
   }
 
-  // ---------------------------------------------------------
-  // CONTEXT FINAL
-  // ---------------------------------------------------------
+  // Esses são os parâmetros finais que o botão vai usar
+  const finalParams = urlParams.toString();
+
   const contextValue = {
     host,
     layer,
-    params,
+    params: finalParams, // ← IMPORTANTE: já vem com client_reference_id
     content,
     frontLink,
     promoLink,
