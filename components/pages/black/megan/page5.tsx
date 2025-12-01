@@ -9,7 +9,7 @@ import { CheckCheck, Loader2 } from 'lucide-react';
 export default function Page({
   active,
   handleClick,
-}:{
+}: {
   active: boolean,
   handleClick: () => void,
 }) {
@@ -22,13 +22,42 @@ export default function Page({
 
   // USER LAYER DATA
   const userHost = userLayerData.host;
-  const userFrontLink = userLayerData.frontLink;
+  const userFrontLinkBase = userLayerData.frontLink; // link base vindo do provider
+
+  // LINK FINAL QUE VAI PARA A STRIPE
+  const [checkoutLink, setCheckoutLink] = useState<string>(userFrontLinkBase);
 
   // SET CONTENT DATA
   const VSL = VSLBlackMegan;
   const videoId = "68deddf0d033c20b201de72c";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
+
+  // MONTA O LINK FINAL DA STRIPE COM client_reference_id
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // pega todos os parâmetros da URL atual
+    const search = window.location.search; // ex: ?utm_source=...&xcod=...
+    const urlParams = new URLSearchParams(search);
+
+    const xcod = urlParams.get("xcod");
+
+    // monta URL base da Stripe
+    const url = new URL(userFrontLinkBase);
+
+    // copia TODOS os parâmetros da URL atual para o link da Stripe
+    urlParams.forEach((value, key) => {
+      url.searchParams.set(key, value);
+    });
+
+    // além disso, se tiver xcod, usamos também como client_reference_id
+    if (xcod && xcod.trim() !== "") {
+      url.searchParams.set("client_reference_id", xcod);
+    }
+
+    setCheckoutLink(url.toString());
+  }, [userFrontLinkBase]);
 
   // VIDEO VERIFY
   useEffect(() => {
@@ -37,10 +66,10 @@ export default function Page({
         const storedVideoTime = Number(localStorage.getItem(videoId + '-resume'));
         if (storedVideoTime > pitchTime) {
           setVisible(true);
-        };
+        }
       }, 1000);
       return () => clearInterval(intervalId);
-    };
+    }
   }, [videoId, visible]);
 
   // BACK REDIRECT
@@ -60,7 +89,7 @@ export default function Page({
           location.href = urlBackRedirect;
         }, 1);
       });
-    };
+    }
 
     setBackRedirect(backLink);
   }, [backLink]);
@@ -76,7 +105,7 @@ export default function Page({
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
         {visible && (
-          <a href={userFrontLink}>
+          <a href={checkoutLink}>
             <Button
               onClick={handleClick}
               disabled={active}
@@ -84,7 +113,7 @@ export default function Page({
             >
               {active ? (
                 <Loader2 className="size-5 animate-spin" />
-              ):(
+              ) : (
                 <CheckCheck className="size-5" />
               )}
               <span>I WANT TO PAY THE FEE!</span>
@@ -100,5 +129,4 @@ export default function Page({
       <Comments />
     </>
   );
-  
 };
