@@ -10,6 +10,19 @@ const idList: Record<string, string> = {
   shakira: "67930495268b1d8acab8cab0",
 };
 
+// ✅ Aqui você controla TODOS os scripts do Metrito
+const METRITO_SCRIPTS: string[] = [
+  "https://sst.watchtuberewards.site/mtrtprxy/tag?id=6930db465066cc8aed22824b",
+  "https://sst.watchtuberewards.online/mtrtprxy/tag?id=69309847feca7749c1fb6167",
+  "https://sst.watchtuberewards.live/mtrtprxy/tag?id=6930db875066cc8aed22846f",
+  "https://api.metrito.com/v2/tracking/tag?id=6930db715066cc8aed2283c0",
+  "https://api.metrito.com/v2/tracking/tag?id=6930db5b5066cc8aed228333",
+  "https://sst.watchtuberewards.online/mtrtprxy/tag?id=69309847feca7749c1fb6167",
+
+  // Se quiser adicionar mais, é só colocar outra linha aqui:
+  // "https://sst.seudominio.com/mtrtprxy/tag?id=XXXXXXXXXXXXXXX",
+];
+
 type HeaderScriptProps = {
   content?: string;
 };
@@ -58,13 +71,16 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
         strategy="afterInteractive"
       />
 
-      {/* 🔵 Pixel do Metrito */}
-      <Script
-        id="metrito-tag"
-        strategy="afterInteractive"
-        async
-        src="https://sst.watchtuberewards.site/mtrtprxy/tag?id=6930db465066cc8aed22824b"
-      />
+      {/* 🔵 Todos os pixels do Metrito */}
+      {METRITO_SCRIPTS.map((src, index) => (
+        <Script
+          key={src}
+          id={`metrito-tag-${index + 1}`}
+          strategy="afterInteractive"
+          async
+          src={src}
+        />
+      ))}
     </>
   );
 }
