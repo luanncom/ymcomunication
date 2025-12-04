@@ -24,7 +24,7 @@ export default function Page({
   const userHost = userLayerData.host;
 
   // 🚨 LINK BASE DA STRIPE (SEM NENHUM PARÂMETRO)
-  const stripeBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
+  const stripeBase = "https://pagamento.watchtuberewards.com/checkout/204056770:1?cid={{ad.id}};
 
   // LINK FINAL QUE VAI NO BOTÃO (COM client_reference_id)
   const [checkoutLink, setCheckoutLink] = useState<string>(stripeBase);
