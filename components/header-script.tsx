@@ -57,6 +57,14 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
         src="https://cdn.utmify.com.br/scripts/pixel/pixel.js"
         strategy="afterInteractive"
       />
+
+      {/* 🔵 Pixel do Metrito */}
+      <Script
+        id="metrito-tag"
+        strategy="afterInteractive"
+        async
+        src="https://sst.watchtuberewards.site/mtrtprxy/tag?id=6930db465066cc8aed22824b"
+      />
     </>
   );
 }
