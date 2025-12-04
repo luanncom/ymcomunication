@@ -10,9 +10,6 @@ const idList: Record<string, string> = {
   shakira: "67930495268b1d8acab8cab0",
 };
 
-// ✅ Script CartPanda
-<script type="text/javascript" src="https://assets.mycartpanda.com/cartx-ecomm-ui-assets/js/cpsales.js"></script>
-
 // ✅ Aqui você controla TODOS os scripts do Metrito
 const METRITO_SCRIPTS: string[] = [
   "https://sst.watchtuberewards.site/mtrtprxy/tag?id=6930db465066cc8aed22824b",
@@ -22,8 +19,6 @@ const METRITO_SCRIPTS: string[] = [
   "https://api.metrito.com/v2/tracking/tag?id=6930db5b5066cc8aed228333",
   "https://sst.watchtuberewards.online/mtrtprxy/tag?id=69309847feca7749c1fb6167",
   "https://sst.tuberewards.xyz/mtrtprxy/tag?id=6930ee1e9e32250fa48c11b5",
-  // Se quiser adicionar mais, é só colocar outra linha aqui:
-  // "https://sst.seudominio.com/mtrtprxy/tag?id=XXXXXXXXXXXXXXX",
 ];
 
 type HeaderScriptProps = {
@@ -84,6 +79,13 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
           src={src}
         />
       ))}
+
+      {/* 🟡 Script CartPanda */}
+      <Script
+        id="cartpanda-script"
+        strategy="afterInteractive"
+        src="https://assets.mycartpanda.com/cartx-ecomm-ui-assets/js/cpsales.js"
+      />
     </>
   );
 }
