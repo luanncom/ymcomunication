@@ -38,8 +38,8 @@ export function LayerProvider({
     layer,
     params,
     content,
-    frontLink,
-    promoLink,
+    frontLink: frontLinkBase,
+    promoLink: promoLinkBase,
   };
 
   return (

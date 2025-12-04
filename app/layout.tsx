@@ -7,6 +7,7 @@ import { Red_Hat_Display } from "next/font/google";
 import { headers, cookies } from "next/headers";
 import "@/app/globals.css";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const redHatDisplay = Red_Hat_Display({
   variable: "--font-red-hat-display",
@@ -103,6 +104,7 @@ export default async function Layout({
             {children}
           </LayerProvider>
         )}
+        <SpeedInsights />
       </body>
     </html>
   );
