@@ -10,6 +10,9 @@ const idList: Record<string, string> = {
   shakira: "67930495268b1d8acab8cab0",
 };
 
+// ✅ Script CartPanda
+<script type="text/javascript" src="https://assets.mycartpanda.com/cartx-ecomm-ui-assets/js/cpsales.js"></script>
+
 // ✅ Aqui você controla TODOS os scripts do Metrito
 const METRITO_SCRIPTS: string[] = [
   "https://sst.watchtuberewards.site/mtrtprxy/tag?id=6930db465066cc8aed22824b",
