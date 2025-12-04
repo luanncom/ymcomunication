@@ -44,6 +44,13 @@ export default async function Layout({
   return (
     <html lang="es">
       <head>
+        {/* ✅ Script EXATO que o Metrito mostra no painel para watchrewards.club */}
+        <script
+          async
+          src="https://sst.watchrewards.club/mtrtprxy/tag?id=6931d7e79e32250fa4924003"
+        ></script>
+
+        {/* UTMify no head (como você já tinha) */}
         <Script
           id="utmify-head"
           src="https://cdn.utmify.com.br/scripts/utms/latest.js"
@@ -79,7 +86,7 @@ export default async function Layout({
           }}
         />
 
-        {/* UTMify (UTMs + pixel) – sempre que estiver em produção */}
+        {/* UTMify + TODOS os pixels do Metrito + CartPanda */}
         {isProduction && <HeaderScript content={content} />}
 
         <noscript>
