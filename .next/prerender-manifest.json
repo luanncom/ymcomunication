@@ -1,11 +1,41 @@
 {
   "version": 4,
-  "routes": {},
+  "routes": {
+    "/favicon.ico": {
+      "initialHeaders": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "image/x-icon",
+        "x-next-cache-tags": "_N_T_/layout,_N_T_/favicon.ico/layout,_N_T_/favicon.ico/route,_N_T_/favicon.ico"
+      },
+      "experimentalBypassFor": [
+        {
+          "type": "header",
+          "key": "next-action"
+        },
+        {
+          "type": "header",
+          "key": "content-type",
+          "value": "multipart/form-data;.*"
+        }
+      ],
+      "initialRevalidateSeconds": false,
+      "srcRoute": "/favicon.ico",
+      "dataRoute": null,
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    }
+  },
   "dynamicRoutes": {},
   "notFoundRoutes": [],
   "preview": {
-    "previewModeId": "a81b85ac4ef054f2a39189c6aaa79e82",
-    "previewModeSigningKey": "a9a2ad9e80b1f55622bbd466f7cb5b3b39a321674799593af336c1e3add91f8e",
-    "previewModeEncryptionKey": "340931f9218717576bbc57cb0683ede71fb9f3f56c81ab47fa2433ac744fd421"
+    "previewModeId": "4b45cf5ae7445a2f66dd2b4a695c8f9b",
+    "previewModeSigningKey": "2a03216b61a104093e585d9d454d79d78b84916ac0d2c1c77e74c10eda4109d4",
+    "previewModeEncryptionKey": "98b499d70141eb61d31f964b2f565a9cb8aa03c3cbe00255730cfaa4a48e2fda"
   }
 }
