@@ -30,8 +30,8 @@ export function LayerProvider({
 }: LayerProviderProps) {
 
   // Links base da Stripe
-  const frontLinkBase = "https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n";
-  const promoLinkBase = "https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o";
+  const frontLinkBase = "https://merakimkt.mycartpanda.com/checkout/204056770:1";
+  const promoLinkBase = "https://merakimkt.mycartpanda.com/checkout/204057672:1";
 
   // Pega todos os parâmetros atuais
   const urlParams = new URLSearchParams(params || "");
