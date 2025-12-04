@@ -1,74 +1,47 @@
-"use client";
-
 import Button from "@/components/button";
 import Comments from "@/components/comments";
-import PlacesAlert from "@/components/places-alert";
+import PlacesAlert from '@/components/places-alert';
 import VSLBlackMegan from "@/components/videos/vsl-black-megan";
-import { useLayer } from "@/context/layer-provider";
-import { useEffect, useState } from "react";
-import { CheckCheck, Loader2 } from "lucide-react";
+import { useLayer } from '@/context/layer-provider';
+import { useEffect, useState } from 'react';
+import { CheckCheck, Loader2 } from 'lucide-react';
 
 export default function Page({
   active,
   handleClick,
-}: {
-  active: boolean;
-  handleClick: () => void;
+}:{
+  active: boolean,
+  handleClick: () => void,
 }) {
 
-  // CONTROLA QUANDO O BOTÃO APARECE
+  // COMPONENT STATES
   const [visible, setVisible] = useState<boolean>(false);
 
-  // DADOS DO LAYER (só uso o host pra back redirect)
+  // IMPORT CONTEXT DATA
   const userLayerData = useLayer();
+
+  // USER LAYER DATA
   const userHost = userLayerData.host;
+  const userFrontLink = userLayerData.frontLink;
 
-  // 🚨 LINK BASE DA STRIPE (SEM NENHUM PARÂMETRO)
-  const stripeBase = "https://pagamento.watchtuberewards.com/checkout/204056770:1?cid={{ad.id}};
-
-  // LINK FINAL QUE VAI NO BOTÃO (COM client_reference_id)
-  const [checkoutLink, setCheckoutLink] = useState<string>(stripeBase);
-
-  // VÍDEO / BACK REDIRECT
+  // SET CONTENT DATA
   const VSL = VSLBlackMegan;
   const videoId = "68deddf0d033c20b201de72c";
   const backLink = `https://${userHost}/promo`;
   const pitchTime = 630;
 
-  // 👉 AQUI É ONDE EU MONTO O client_reference_id
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const params = new URLSearchParams(window.location.search);
-
-    // xcod carrega toda a info da campanha (campaign, adset, ad, placement...)
-    const xcod = params.get("xcod");
-
-    if (xcod && xcod.trim() !== "") {
-      // SOMENTE o que interessa pra Stripe / n8n:
-      // client_reference_id = xcod
-      const finalUrl = `${stripeBase}?client_reference_id=${encodeURIComponent(xcod)}`;
-      setCheckoutLink(finalUrl);
-    } else {
-      // se não tiver xcod, vai sem tracking mesmo
-      setCheckoutLink(stripeBase);
-    }
-  }, [stripeBase]);
-
-  // LIBERA O BOTÃO QUANDO O VÍDEO CHEGA NO MOMENTO CERTO
+  // VIDEO VERIFY
   useEffect(() => {
     if (!visible) {
       const intervalId = setInterval(() => {
-        const storedVideoTime = Number(
-          localStorage.getItem(videoId + "-resume")
-        );
+        const storedVideoTime = Number(localStorage.getItem(videoId + '-resume'));
         if (storedVideoTime > pitchTime) {
           setVisible(true);
-        }
+        };
       }, 1000);
       return () => clearInterval(intervalId);
-    }
-  }, [videoId, visible, pitchTime]);
+    };
+  }, [videoId, visible]);
 
   // BACK REDIRECT
   useEffect(() => {
@@ -76,18 +49,18 @@ export default function Page({
       let urlBackRedirect = url;
       urlBackRedirect =
         urlBackRedirect.trim() +
-        (urlBackRedirect.indexOf("?") > 0 ? "&" : "?") +
-        document.location.search.replace("?", "").toString();
-      history.pushState({}, "", location.href);
-      history.pushState({}, "", location.href);
-      history.pushState({}, "", location.href);
-      window.addEventListener("popstate", () => {
-        console.log("onpopstate", urlBackRedirect);
+        (urlBackRedirect.indexOf('?') > 0 ? '&' : '?') +
+        document.location.search.replace('?', '').toString();
+      history.pushState({}, '', location.href);
+      history.pushState({}, '', location.href);
+      history.pushState({}, '', location.href);
+      window.addEventListener('popstate', () => {
+        console.log('onpopstate', urlBackRedirect);
         setTimeout(() => {
           location.href = urlBackRedirect;
         }, 1);
       });
-    }
+    };
 
     setBackRedirect(backLink);
   }, [backLink]);
@@ -100,11 +73,10 @@ export default function Page({
         </span>
         <PlacesAlert visible={visible} />
       </div>
-
       <div className="flex flex-col items-center gap-8 relative -mt-4">
         <VSL />
         {visible && (
-          <a href={checkoutLink}>
+          <a href={userFrontLink}>
             <Button
               onClick={handleClick}
               disabled={active}
@@ -112,7 +84,7 @@ export default function Page({
             >
               {active ? (
                 <Loader2 className="size-5 animate-spin" />
-              ) : (
+              ):(
                 <CheckCheck className="size-5" />
               )}
               <span>I WANT TO PAY THE FEE!</span>
@@ -120,14 +92,13 @@ export default function Page({
           </a>
         )}
       </div>
-
       {!visible && (
         <div className="text-sm text-center p-2">
           🔊 Check if your sound is turned on
         </div>
       )}
-
       <Comments />
     </>
   );
-}
+  
+};
