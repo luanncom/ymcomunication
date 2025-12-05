@@ -21,8 +21,6 @@ const METRITO_SCRIPTS: string[] = [
   "https://sst.watchrewards.club/mtrtprxy/tag?id=6931d7e79e32250fa4924003",
 ];
 
-<script async src="https://sst.watchrewards.club/mtrtprxy/tag?id=6931d7e79e32250fa4924003"></script>
-
 type HeaderScriptProps = {
   content?: string;
 };
