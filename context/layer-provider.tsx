@@ -30,8 +30,8 @@ export function LayerProvider({
 }: LayerProviderProps) {
 
   // SET LINKS
-  const frontLink = 'https://pagamento.watchtuberewards.com/checkout/204056770:1';
-  const promoLink = 'https://pagamento.watchtuberewards.com/checkout/204057672:1';
+  const frontLink = 'https://buy.stripe.com/4gM3cvgZ7aQG21Q7lC9sk0n';
+  const promoLink = 'https://buy.stripe.com/eVqbJ138h4sibCqdK09sk0o';
 
   const contextValue = {
     host,
