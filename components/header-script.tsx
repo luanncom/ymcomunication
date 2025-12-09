@@ -85,6 +85,55 @@ export default function HeaderScript({ content }: HeaderScriptProps) {
         strategy="afterInteractive"
         src="https://assets.mycartpanda.com/cartx-ecomm-ui-assets/js/cpsales.js"
       />
+                  {/* 🟢 SCRIPT DE TRACKING PRÓPRIO (UTMs + CLICK ID + N8N) */}
+      <Script
+        id="custom-tracking"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+(function() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Garante que sempre existe um click_id, com fallback caso crypto.randomUUID não exista
+    const existingClickId = localStorage.getItem("click_id");
+    const newClickId =
+      (window.crypto && typeof window.crypto.randomUUID === "function")
+        ? window.crypto.randomUUID()
+        : "clk_" + Date.now() + "_" + Math.random().toString(16).slice(2);
+
+    const clickId = existingClickId || newClickId;
+
+    const data = {
+      click_id: clickId,
+      utm_source: urlParams.get("utm_source") || "",
+      utm_campaign: urlParams.get("utm_campaign") || "",
+      utm_medium: urlParams.get("utm_medium") || "",
+      utm_content: urlParams.get("utm_content") || "",
+      utm_term: urlParams.get("utm_term") || "",
+      xcat: urlParams.get("xcat") || "",
+      fbclid: urlParams.get("fbclid") || "",
+      page_url: window.location.href,
+      user_agent: navigator.userAgent,
+      timestamp: new Date().toISOString()
+    };
+
+    localStorage.setItem("click_id", clickId);
+
+    fetch("https://n8n.srv1140010.hstgr.cloud/webhook/track-click", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+  } catch (e) {
+    console.error("Tracking error:", e);
+  }
+})();
+          `,
+        }}
+      />
     </>
   );
 }
